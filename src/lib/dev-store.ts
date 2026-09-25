@@ -29,7 +29,7 @@ let products: Product[] = [
   {
     id: "p2",
     category: "Stripe",
-    title: "Stripe Verificada D3",
+    title: "Stripe Verificada D2",
     code: "STRP-77213840",
     attributes: [],
     price: 0,
