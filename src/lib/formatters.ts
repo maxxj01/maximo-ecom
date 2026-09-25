@@ -13,6 +13,18 @@ export function maskId(code: string): string {
   return `${first} ••• ${last}`;
 }
 
+// Deriva um subdomínio no padrão real de loja Shopify (ex:
+// "ui12nc-e0.myshopify.com") a partir do código do produto, com o miolo
+// oculto — mesma ideia do maskId, mas no formato de domínio da plataforma.
+export function maskShopifyDomain(code: string): string {
+  const clean = code.replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+  const first = (clean + "xxx").slice(0, 3);
+  let hash = 0;
+  for (const ch of clean) hash = (hash * 31 + ch.charCodeAt(0)) % 1296; // 36^2
+  const last = hash.toString(36).padStart(2, "0");
+  return `${first}•••${last}.myshopify.com`;
+}
+
 export function formatDate(iso: string): string {
   return new Intl.DateTimeFormat("pt-BR", {
     day: "2-digit",

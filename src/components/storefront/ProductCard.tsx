@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Check, Copy, Plus, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
 import type { Product } from "@/lib/types";
-import { formatBRL, maskId } from "@/lib/formatters";
+import { formatBRL, maskId, maskShopifyDomain } from "@/lib/formatters";
 import { useCart } from "@/lib/cart-context";
 
 const MAX_VISIBLE_ATTRIBUTES = 3;
@@ -48,6 +48,8 @@ export function ProductCard({
   };
 
   const badgeSrc = PLATFORM_BADGES[product.category];
+  const isShopify = product.category === "Shopify";
+  const displayCode = isShopify ? maskShopifyDomain(product.code) : maskId(product.code);
 
   const image = (
     <div
@@ -115,7 +117,7 @@ export function ProductCard({
         onClick={() => copyCode(product.code)}
         className="inline-flex w-fit items-center gap-1.5 rounded-md border border-border bg-bg-subtle px-2 py-1 font-mono text-xs text-text-muted hover:text-text"
       >
-        {maskId(product.code)}
+        {displayCode}
         <Copy size={12} />
       </button>
 
