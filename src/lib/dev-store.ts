@@ -44,9 +44,9 @@ let products: Product[] = [
   },
   {
     id: "p3",
-    category: "Payments",
-    title: "Conta Payments Premium",
-    code: "PAY-10495522",
+    category: "Shopify",
+    title: "Loja Shopify Verificada",
+    code: "SHOP-10495522",
     attributes: [],
     price: 49.9,
     planPrice: null,

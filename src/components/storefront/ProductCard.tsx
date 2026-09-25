@@ -9,6 +9,15 @@ import { useCart } from "@/lib/cart-context";
 
 const MAX_VISIBLE_ATTRIBUTES = 3;
 
+// Selo do ativo por categoria — mesmo ícone usado na fileira de logos da
+// hero. Categoria sem selo cadastrado só não mostra o ícone (fallback
+// silencioso, sem quebrar o card).
+const PLATFORM_BADGES: Record<string, string> = {
+  "Google Ads": "/icons/badges/google-ads.png",
+  Stripe: "/icons/badges/stripe.png",
+  Shopify: "/icons/badges/shopify.png",
+};
+
 function copyCode(code: string) {
   navigator.clipboard
     .writeText(code)
@@ -38,24 +47,46 @@ export function ProductCard({
     onQuickOrder(product);
   };
 
+  const badgeSrc = PLATFORM_BADGES[product.category];
+
   const image = (
     <div
       className={
         layout === "grid"
-          ? "relative aspect-square w-full overflow-hidden rounded-t-lg bg-bg-subtle"
-          : "relative h-28 w-28 shrink-0 overflow-hidden rounded-lg bg-bg-subtle"
+          ? "relative h-28 w-full overflow-hidden rounded-t-lg"
+          : "relative h-28 w-28 shrink-0 overflow-hidden rounded-lg"
       }
+      style={{
+        background: "linear-gradient(135deg, #1E1440 0%, #0A0A14 65%)",
+      }}
     >
-      <Image
-        src={product.imageUrl}
-        alt={product.title}
-        fill
-        sizes={layout === "grid" ? "(min-width: 900px) 25vw, 50vw" : "112px"}
-        className={`object-cover ${isSoldOut ? "opacity-50 grayscale" : ""}`}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0"
+        style={{
+          background: "radial-gradient(circle at 25% 20%, rgba(124,58,237,0.35), transparent 60%)",
+        }}
       />
-      <span className="absolute left-2 top-2 rounded-full bg-bg/90 px-2 py-0.5 text-[11px] font-semibold text-purple shadow-sm">
-        {product.category}
-      </span>
+
+      <div
+        className={
+          layout === "grid"
+            ? `relative flex items-center gap-3 p-4 ${isSoldOut ? "opacity-50 grayscale" : ""}`
+            : `relative flex h-full flex-col items-start justify-center gap-2 p-3 ${isSoldOut ? "opacity-50 grayscale" : ""}`
+        }
+      >
+        {badgeSrc && (
+          <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-xl shadow-md">
+            <Image src={badgeSrc} alt="" fill sizes="44px" className="object-cover" />
+          </div>
+        )}
+        <div className="min-w-0">
+          <div className="truncate text-xs font-medium text-white/60">Máximo Ecom</div>
+          <div className="truncate text-sm font-bold text-white">Conta Segura</div>
+          <div className="truncate text-[11px] text-white/45">{product.category}</div>
+        </div>
+      </div>
+
       {isSoldOut && (
         <span className="absolute right-2 top-2 rounded-full bg-red px-2 py-0.5 text-[11px] font-semibold text-white">
           Esgotado
