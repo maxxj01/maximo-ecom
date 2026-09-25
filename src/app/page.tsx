@@ -1,5 +1,6 @@
 import { getProducts } from "@/lib/api";
 import { Hero } from "@/components/layout/Hero";
+import { Footer } from "@/components/layout/Footer";
 import { Storefront } from "@/components/storefront/Storefront";
 import { FAQSection } from "@/components/storefront/FAQSection";
 
@@ -11,6 +12,7 @@ export default async function Page() {
       <Hero />
       <Storefront initialProducts={products} />
       <FAQSection />
+      <Footer />
     </>
   );
 }

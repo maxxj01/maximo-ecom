@@ -13,6 +13,7 @@ type FormState = {
   code: string;
   attributes: Attribute[];
   price: string;
+  priceOnRequest: boolean;
   planPrice: string;
   caption: string;
   status: Product["status"];
@@ -30,6 +31,7 @@ function toFormState(values?: Partial<Product>): FormState {
     code: values?.code ?? "",
     attributes: values?.attributes?.length ? values.attributes : [{ label: "", value: "" }],
     price: values?.price != null ? String(values.price) : "",
+    priceOnRequest: values?.priceOnRequest ?? false,
     planPrice: values?.planPrice != null ? String(values.planPrice) : "",
     caption: values?.caption ?? "",
     status: values?.status ?? "disponivel",
@@ -96,6 +98,7 @@ export function ProductFormModal({
     code: form.code || "000000000",
     attributes: form.attributes.filter((a) => a.label.trim()),
     price: Number(form.price) || 0,
+    priceOnRequest: form.priceOnRequest,
     planPrice: form.planPrice.trim() ? Number(form.planPrice) : null,
     caption: form.caption.trim() || null,
     status: form.status,
@@ -109,7 +112,12 @@ export function ProductFormModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.title.trim() || !form.category.trim() || !form.code.trim() || !form.price.trim()) {
+    if (
+      !form.title.trim() ||
+      !form.category.trim() ||
+      !form.code.trim() ||
+      (!form.priceOnRequest && !form.price.trim())
+    ) {
       toast.error("Preencha categoria, título, código e preço.");
       return;
     }
@@ -123,7 +131,8 @@ export function ProductFormModal({
       title: form.title.trim(),
       code: form.code.trim(),
       attributes: form.attributes.filter((a) => a.label.trim() && a.value.trim()),
-      price: Number(form.price),
+      price: form.priceOnRequest ? 0 : Number(form.price),
+      priceOnRequest: form.priceOnRequest,
       planPrice: form.planPrice.trim() ? Number(form.planPrice) : null,
       caption: form.caption.trim() || null,
       status: form.status,
@@ -226,6 +235,16 @@ export function ProductFormModal({
               />
             </div>
 
+            <label className="flex items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                checked={form.priceOnRequest}
+                onChange={(e) => set("priceOnRequest", e.target.checked)}
+                className="h-4 w-4 accent-purple"
+              />
+              Preço sob consulta (exibe &quot;Consultar valor&quot; no lugar do preço)
+            </label>
+
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="mb-1 block text-xs font-semibold text-text-muted">Preço</label>
@@ -235,7 +254,8 @@ export function ProductFormModal({
                   step="0.01"
                   value={form.price}
                   onChange={(e) => set("price", e.target.value)}
-                  className="w-full rounded-md border border-border bg-bg px-3 py-2 text-sm outline-none focus:border-purple"
+                  disabled={form.priceOnRequest}
+                  className="w-full rounded-md border border-border bg-bg px-3 py-2 text-sm outline-none focus:border-purple disabled:opacity-50"
                 />
               </div>
               <div>
@@ -247,7 +267,8 @@ export function ProductFormModal({
                   value={form.planPrice}
                   onChange={(e) => set("planPrice", e.target.value)}
                   placeholder="Opcional"
-                  className="w-full rounded-md border border-border bg-bg px-3 py-2 text-sm outline-none focus:border-purple"
+                  disabled={form.priceOnRequest}
+                  className="w-full rounded-md border border-border bg-bg px-3 py-2 text-sm outline-none focus:border-purple disabled:opacity-50"
                 />
               </div>
             </div>

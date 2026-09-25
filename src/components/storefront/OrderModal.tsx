@@ -43,6 +43,7 @@ export function OrderModal(props: Props) {
           qty: line.qty,
         }));
 
+  const isPriceOnRequest = props.mode === "quick" && props.product.priceOnRequest;
   const total = items.reduce((sum, item) => sum + item.unitPrice * item.qty, 0);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -99,7 +100,11 @@ export function OrderModal(props: Props) {
         {props.mode === "quick" && (
           <div className="mb-4">
             <div className="mb-2 text-sm font-semibold">{props.product.title}</div>
-            {props.product.planPrice != null ? (
+            {isPriceOnRequest ? (
+              <div className="text-sm text-text-muted">
+                Valor a consultar — nossa equipe confirma pelo contato informado abaixo.
+              </div>
+            ) : props.product.planPrice != null ? (
               <div className="grid grid-cols-2 gap-2">
                 <button
                   type="button"
@@ -142,10 +147,12 @@ export function OrderModal(props: Props) {
           </ul>
         )}
 
-        <div className="mb-4 flex justify-between text-sm font-bold">
-          <span>Total</span>
-          <span>{formatBRL(total)}</span>
-        </div>
+        {!isPriceOnRequest && (
+          <div className="mb-4 flex justify-between text-sm font-bold">
+            <span>Total</span>
+            <span>{formatBRL(total)}</span>
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-3">
           <div>

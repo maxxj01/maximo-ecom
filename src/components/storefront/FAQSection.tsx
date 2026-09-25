@@ -29,7 +29,7 @@ export function FAQSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section className="mx-auto max-w-3xl px-4 py-16 min-[900px]:px-6">
+    <section id="faq" className="mx-auto max-w-3xl px-4 py-16 min-[900px]:px-6">
       <h2 className="mb-6 flex items-center gap-3 text-2xl font-extrabold text-text">
         <span className="h-6 w-1 shrink-0 rounded-full bg-purple" />
         Dúvidas Frequentes

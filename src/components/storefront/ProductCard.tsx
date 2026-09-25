@@ -121,8 +121,10 @@ export function ProductCard({
 
       <div className="mt-auto flex flex-col gap-3 pt-1">
         <div>
-          <div className="text-lg font-extrabold text-text">{formatBRL(product.price)}</div>
-          {product.planPrice != null && (
+          <div className="text-lg font-extrabold text-text">
+            {product.priceOnRequest ? "Consultar valor" : formatBRL(product.price)}
+          </div>
+          {!product.priceOnRequest && product.planPrice != null && (
             <div className="text-xs font-semibold text-purple">
               Com plano: {formatBRL(product.planPrice)}
             </div>
@@ -130,13 +132,13 @@ export function ProductCard({
           {!isSoldOut && product.caption && (
             <div className="mt-1 text-xs font-medium text-purple">{product.caption}</div>
           )}
-          {!isSoldOut && (
+          {!isSoldOut && !product.priceOnRequest && (
             <div className="mt-1 text-xs text-text-muted">Cartão de crédito ou PIX</div>
           )}
         </div>
 
         <div className="flex items-center gap-2">
-          {product.ctaType === "order" && (
+          {product.ctaType === "order" && !product.priceOnRequest && (
             <button
               type="button"
               aria-label="Adicionar ao carrinho"

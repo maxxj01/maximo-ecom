@@ -7,6 +7,7 @@ export type Product = {
   code: string; // código interno, exibido mascarado (ex: "254 ••• 6658")
   attributes: Attribute[]; // linhas com check verde no card
   price: number;
+  priceOnRequest?: boolean; // quando true, exibe "Consultar valor" no lugar do preço formatado
   planPrice?: number | null; // preço alternativo "Com plano", opcional
   caption?: string | null; // linha curta abaixo do preço (ex: "conta nova verificada sem gastos")
   status: "disponivel" | "esgotado";

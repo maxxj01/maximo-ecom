@@ -5,6 +5,7 @@ import type { Product } from "@/lib/types";
 import { SearchAndFilters } from "./SearchAndFilters";
 import { ProductGrid } from "./ProductGrid";
 import { ProductList } from "./ProductList";
+import { CategorySection } from "./CategorySection";
 import { OrderModal } from "./OrderModal";
 
 export function Storefront({ initialProducts }: { initialProducts: Product[] }) {
@@ -36,6 +37,15 @@ export function Storefront({ initialProducts }: { initialProducts: Product[] }) 
     });
   }, [visibleProducts, query, activeCategory]);
 
+  const productsByCategory = useMemo(() => {
+    return categories.map((category) => ({
+      category,
+      products: visibleProducts.filter((p) => p.category === category),
+    }));
+  }, [categories, visibleProducts]);
+
+  const isBrowsingAll = !query.trim() && !activeCategory;
+
   return (
     <section id="produtos" className="mx-auto max-w-6xl px-4 py-10 min-[900px]:px-6">
       <SearchAndFilters
@@ -49,7 +59,17 @@ export function Storefront({ initialProducts }: { initialProducts: Product[] }) 
       />
 
       <div className="mt-6">
-        {filteredProducts.length === 0 ? (
+        {isBrowsingAll ? (
+          productsByCategory.map(({ category, products }) => (
+            <CategorySection
+              key={category}
+              category={category}
+              products={products}
+              onQuickOrder={setQuickOrderProduct}
+              onViewAll={setActiveCategory}
+            />
+          ))
+        ) : filteredProducts.length === 0 ? (
           <p className="py-16 text-center text-sm text-text-muted">
             Nenhum produto encontrado.
           </p>
