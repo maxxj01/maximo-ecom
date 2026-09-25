@@ -144,9 +144,56 @@ export function ProductCard({
   }
 
   return (
-    <div className="flex flex-col overflow-hidden rounded-lg border border-border bg-bg shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+    <div className="group relative flex flex-col overflow-hidden rounded-lg border border-border bg-bg shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-purple hover:shadow-lg hover:shadow-purple/30">
       {image}
       {body}
+
+      {/* Visão rápida: revela por cima do card no hover (desktop only —
+          :hover não dispara em touch, então no celular o card fica normal). */}
+      <div className="pointer-events-none absolute inset-0 z-20 flex flex-col justify-between rounded-lg border border-purple/40 bg-bg/97 p-5 opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:pointer-events-auto group-hover:opacity-100">
+        <span className="absolute left-2.5 top-2.5 h-3 w-3 border-l-2 border-t-2 border-purple" />
+        <span className="absolute bottom-2.5 right-2.5 h-3 w-3 border-b-2 border-r-2 border-purple" />
+
+        <div className="overflow-y-auto">
+          <div className="text-[11px] font-bold uppercase tracking-wide text-purple">Visão rápida</div>
+          <h4 className="mt-1 text-base font-extrabold leading-snug text-text">{product.title}</h4>
+
+          {product.caption && (
+            <>
+              <div className="mt-3 text-[11px] font-bold uppercase tracking-wide text-text-muted">
+                Sobre o produto
+              </div>
+              <p className="mt-1 text-sm text-text-muted">{product.caption}</p>
+            </>
+          )}
+
+          {visibleAttributes.length > 0 && (
+            <>
+              <div className="mt-3 text-[11px] font-bold uppercase tracking-wide text-text-muted">
+                O que está incluso
+              </div>
+              <ul className="mt-1 space-y-1">
+                {visibleAttributes.map((attr) => (
+                  <li key={attr.label} className="flex items-center gap-1.5 text-xs text-text-muted">
+                    <Check size={14} className="shrink-0 text-green" />
+                    <span className="font-medium text-text">{attr.label}:</span> {attr.value}
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+        </div>
+
+        <button
+          type="button"
+          disabled={isSoldOut}
+          onClick={handleMainCta}
+          className="mt-3 inline-flex items-center justify-center gap-1.5 rounded-full bg-purple px-4 py-2.5 text-sm font-bold uppercase tracking-wide text-white shadow-md shadow-purple/25 transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:bg-border disabled:text-text-muted disabled:opacity-100 disabled:shadow-none"
+        >
+          {product.ctaType === "link" && <ExternalLink size={14} />}
+          {isSoldOut ? "Esgotado" : product.ctaLabel || "Pedir"}
+        </button>
+      </div>
     </div>
   );
 }
