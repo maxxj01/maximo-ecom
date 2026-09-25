@@ -1,0 +1,146 @@
+"use client";
+
+import Image from "next/image";
+import { Check, Copy, Plus, ExternalLink } from "lucide-react";
+import { toast } from "sonner";
+import type { Product } from "@/lib/types";
+import { formatBRL, maskId } from "@/lib/formatters";
+import { useCart } from "@/lib/cart-context";
+
+const MAX_VISIBLE_ATTRIBUTES = 3;
+
+function copyCode(code: string) {
+  navigator.clipboard
+    .writeText(code)
+    .then(() => toast.success("Código copiado!"))
+    .catch(() => toast.error("Não foi possível copiar o código."));
+}
+
+export function ProductCard({
+  product,
+  layout = "grid",
+  onQuickOrder,
+}: {
+  product: Product;
+  layout?: "grid" | "list";
+  onQuickOrder: (product: Product) => void;
+}) {
+  const { addToCart } = useCart();
+  const isSoldOut = product.status === "esgotado";
+  const visibleAttributes = product.attributes.slice(0, MAX_VISIBLE_ATTRIBUTES);
+
+  const handleMainCta = () => {
+    if (isSoldOut) return;
+    if (product.ctaType === "link" && product.ctaUrl) {
+      window.open(product.ctaUrl, "_blank", "noopener,noreferrer");
+      return;
+    }
+    onQuickOrder(product);
+  };
+
+  const image = (
+    <div
+      className={
+        layout === "grid"
+          ? "relative aspect-square w-full overflow-hidden rounded-t-lg bg-bg-subtle"
+          : "relative h-28 w-28 shrink-0 overflow-hidden rounded-lg bg-bg-subtle"
+      }
+    >
+      <Image
+        src={product.imageUrl}
+        alt={product.title}
+        fill
+        sizes={layout === "grid" ? "(min-width: 900px) 25vw, 50vw" : "112px"}
+        className={`object-cover ${isSoldOut ? "opacity-50 grayscale" : ""}`}
+      />
+      <span className="absolute left-2 top-2 rounded-full bg-bg/90 px-2 py-0.5 text-[11px] font-semibold text-purple shadow-sm">
+        {product.category}
+      </span>
+      {isSoldOut && (
+        <span className="absolute right-2 top-2 rounded-full bg-red px-2 py-0.5 text-[11px] font-semibold text-white">
+          Esgotado
+        </span>
+      )}
+    </div>
+  );
+
+  const body = (
+    <div className={layout === "grid" ? "flex flex-1 flex-col gap-3 p-4" : "flex flex-1 flex-col gap-2 py-1"}>
+      <h3 className="text-base font-bold leading-snug text-text">{product.title}</h3>
+
+      {visibleAttributes.length > 0 && (
+        <ul className="space-y-1">
+          {visibleAttributes.map((attr) => (
+            <li key={attr.label} className="flex items-center gap-1.5 text-xs text-text-muted">
+              <Check size={14} className="shrink-0 text-green" />
+              <span className="font-medium text-text">{attr.label}:</span> {attr.value}
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <button
+        type="button"
+        onClick={() => copyCode(product.code)}
+        className="inline-flex w-fit items-center gap-1.5 rounded-md border border-border bg-bg-subtle px-2 py-1 font-mono text-xs text-text-muted hover:text-text"
+      >
+        {maskId(product.code)}
+        <Copy size={12} />
+      </button>
+
+      <div className="mt-auto flex items-end justify-between gap-3 pt-1">
+        <div>
+          <div className="text-lg font-extrabold text-text">{formatBRL(product.price)}</div>
+          {product.planPrice != null && (
+            <div className="text-xs font-semibold text-purple">
+              Com plano: {formatBRL(product.planPrice)}
+            </div>
+          )}
+        </div>
+
+        <div className="flex items-center gap-2">
+          {product.ctaType === "order" && (
+            <button
+              type="button"
+              aria-label="Adicionar ao carrinho"
+              disabled={isSoldOut}
+              onClick={() => {
+                if (isSoldOut) return;
+                addToCart(product, "normal");
+                toast.success(`${product.title} adicionado ao carrinho`);
+              }}
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-text hover:bg-lilac-light/60 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              <Plus size={16} />
+            </button>
+          )}
+          <button
+            type="button"
+            disabled={isSoldOut}
+            onClick={handleMainCta}
+            className="inline-flex items-center gap-1.5 rounded-full bg-purple px-4 py-2 text-sm font-semibold text-white shadow-md shadow-purple/25 transition-all hover:opacity-90 hover:shadow-lg hover:shadow-purple/35 disabled:cursor-not-allowed disabled:bg-border disabled:text-text-muted disabled:opacity-100 disabled:shadow-none"
+          >
+            {product.ctaType === "link" && <ExternalLink size={14} />}
+            {product.ctaLabel || "Pedir"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  if (layout === "list") {
+    return (
+      <div className="flex gap-4 rounded-lg border border-border bg-bg p-3 shadow-sm transition-shadow hover:shadow-md">
+        {image}
+        {body}
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col overflow-hidden rounded-lg border border-border bg-bg shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+      {image}
+      {body}
+    </div>
+  );
+}

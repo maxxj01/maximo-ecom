@@ -1,26 +1,100 @@
 @import "tailwindcss";
 
+/* next-themes toggles a "dark" class on <html>; make Tailwind's dark:
+   variant match that instead of only prefers-color-scheme. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --purple-deep: #3b1a8c;
+  --purple: #7c3aed;
+  --purple-blue: #4f46e5;
+  --brand-gradient: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
+  --lilac-light: #ede9fe;
+  --purple-light: #a78bfa;
+  --blue-light: #60a5fa;
+  --bg: #ffffff;
+  --bg-subtle: #f9fafb;
+  --text: #1f1b2e;
+  --text-muted: #6b7280;
+  --border: #e5e7eb;
+  --bg-dark: #0a0a14;
+  --surface-dark: #1f1b2e;
+  --green: #16a34a;
+  --amber: #f59e0b;
+  --red: #dc2626;
+}
+
+.dark {
+  --bg: var(--bg-dark);
+  --bg-subtle: var(--surface-dark);
+  --text: #f3f0ff;
+  --text-muted: #a1a1b5;
+  --border: #322c4a;
+  --lilac-light: #2a2140;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-purple-deep: var(--purple-deep);
+  --color-purple: var(--purple);
+  --color-purple-blue: var(--purple-blue);
+  --color-lilac-light: var(--lilac-light);
+  --color-purple-light: var(--purple-light);
+  --color-blue-light: var(--blue-light);
+  --color-bg: var(--bg);
+  --color-bg-subtle: var(--bg-subtle);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-border: var(--border);
+  --color-bg-dark: var(--bg-dark);
+  --color-surface-dark: var(--surface-dark);
+  --color-green: var(--green);
+  --color-amber: var(--amber);
+  --color-red: var(--red);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--font-plus-jakarta-sans);
+  --font-mono: var(--font-jetbrains-mono);
+
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans), sans-serif;
+}
+
+.brand-gradient-text {
+  background: var(--brand-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.brand-gradient-bg {
+  background: var(--brand-gradient);
+}
+
+/* Entrada da hero (badge/título/CTA/etc) e revelação ao rolar (cards de
+   produto) — ver components/ui/Reveal.tsx para o segundo caso. */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in-up {
+    animation: none;
+  }
 }
