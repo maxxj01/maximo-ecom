@@ -137,9 +137,13 @@ export function ProductCard({
 
       <div className="mt-auto flex flex-col gap-3 pt-1">
         <div>
-          <div className="text-lg font-extrabold text-text">
-            {product.priceOnRequest ? "Consultar valor" : formatBRL(product.price)}
-          </div>
+          {product.priceOnRequest ? (
+            <div className="text-lg font-extrabold text-text">Consultar valor</div>
+          ) : (
+            <div className="inline-block rounded-md bg-green/10 px-2 py-1 text-lg font-extrabold text-green">
+              {formatBRL(product.price)}
+            </div>
+          )}
           {!product.priceOnRequest && product.planPrice != null && (
             <div className="text-xs font-semibold text-purple">
               Com plano: {formatBRL(product.planPrice)}

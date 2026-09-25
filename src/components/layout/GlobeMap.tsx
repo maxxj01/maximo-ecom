@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import dots from "./globe-dots.json";
+import icon from "@/assets/brand/icon.png";
 
 // Paleta oficial da marca — pontos em roxo/azul-violeta, sem o ciano da
 // referência (a referência era só pra pegar o estilo: mapa de pontos com
@@ -98,10 +100,24 @@ export default function GlobeMap() {
       aria-hidden="true"
       className="relative aspect-square w-full max-w-[420px] min-[900px]:max-w-[480px]"
     >
+      {/* Favicon da marca por trás do globo, com glow extra na seta pra
+          dar destaque — puramente decorativo, some atrás do halo/pontos. */}
+      <div className="pointer-events-none absolute inset-[-20%] z-0 flex items-center justify-center">
+        <Image
+          src={icon}
+          alt=""
+          className="h-[75%] w-[75%] object-contain opacity-35"
+          style={{
+            filter:
+              "drop-shadow(0 0 18px rgba(167,139,250,0.85)) drop-shadow(0 0 42px rgba(124,58,237,0.55))",
+          }}
+        />
+      </div>
+
       {/* Halo pulsando por trás — fica parado (é radialmente simétrico,
           giro/zoom nele não mudaria nada visualmente). */}
       <div
-        className="animate-pulse-glow absolute inset-[-8%] rounded-full"
+        className="animate-pulse-glow absolute inset-[-8%] z-10 rounded-full"
         style={{
           background:
             "radial-gradient(circle, rgba(167,139,250,0.25) 0%, rgba(124,58,237,0.1) 55%, transparent 75%)",
@@ -110,7 +126,7 @@ export default function GlobeMap() {
       {/* Janela de recorte FIXA (não escala) — o zoom acontece só no
           conteúdo de dentro, então a imagem cresce "dentro da lente" em vez
           de vazar por cima do que vem depois na página. */}
-      <div className="relative h-full w-full overflow-hidden rounded-full">
+      <div className="relative z-10 h-full w-full overflow-hidden rounded-full">
         <div
           className="h-full w-full"
           style={{
