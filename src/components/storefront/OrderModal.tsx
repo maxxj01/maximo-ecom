@@ -1,12 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { X } from "lucide-react";
+import { X, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
 import type { Product, OrderItem } from "@/lib/types";
 import { formatBRL } from "@/lib/formatters";
 import { useCart } from "@/lib/cart-context";
 import { createOrderAction } from "@/lib/actions";
+
+const WHATSAPP_NUMBER = "5587981738048";
+
+function buildWhatsAppUrl(items: OrderItem[]): string {
+  const lines = items.map((item) => `- ${item.qty}x ${item.title}`);
+  const message = `Olá! Quero pedir:\n${lines.join("\n")}`;
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+}
 
 type Props =
   | { mode: "quick"; product: Product; onClose: () => void }
@@ -191,8 +199,17 @@ export function OrderModal(props: Props) {
             disabled={isSubmitting}
             className="w-full rounded-full bg-purple px-4 py-3 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-60"
           >
-            {isSubmitting ? "Enviando..." : "Enviar pedido"}
+            {isSubmitting ? "Enviando..." : "Fechar pedido"}
           </button>
+          <a
+            href={buildWhatsAppUrl(items)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex w-full items-center justify-center gap-2 rounded-full border border-purple px-4 py-3 text-sm font-semibold text-purple hover:bg-lilac-light/60"
+          >
+            <MessageCircle size={16} />
+            Pedir pelo WhatsApp
+          </a>
         </form>
       </div>
     </div>

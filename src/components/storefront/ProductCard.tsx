@@ -34,7 +34,7 @@ export function ProductCard({
   layout?: "grid" | "list";
   onQuickOrder: (product: Product) => void;
 }) {
-  const { addToCart } = useCart();
+  const { addToCart, openCart } = useCart();
   const isSoldOut = product.status === "esgotado";
   const visibleAttributes = product.attributes.slice(0, MAX_VISIBLE_ATTRIBUTES);
 
@@ -147,6 +147,7 @@ export function ProductCard({
                 if (isSoldOut) return;
                 addToCart(product, "normal");
                 toast.success(`${product.title} adicionado ao carrinho`);
+                openCart();
               }}
               className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-border text-text hover:bg-lilac-light/60 disabled:cursor-not-allowed disabled:opacity-40"
             >
