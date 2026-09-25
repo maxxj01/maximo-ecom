@@ -10,6 +10,7 @@ export type Product = {
   priceOnRequest?: boolean; // quando true, exibe "Consultar valor" no lugar do preço formatado
   planPrice?: number | null; // preço alternativo "Com plano", opcional
   caption?: string | null; // linha curta abaixo do preço (ex: "conta nova verificada sem gastos")
+  bestSeller?: boolean; // exibe o selo "Mais vendido" no canto do card
   status: "disponivel" | "esgotado";
   visible: boolean; // aparece ou não na vitrine, independente do status
   imageUrl: string;

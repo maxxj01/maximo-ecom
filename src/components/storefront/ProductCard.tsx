@@ -89,6 +89,12 @@ export function ProductCard({
         </div>
       </div>
 
+      {product.bestSeller && (
+        <span className="brand-gradient-bg absolute left-2 top-2 rounded-full px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide text-white shadow-sm">
+          Mais vendido
+        </span>
+      )}
+
       {isSoldOut && (
         <span className="absolute right-2 top-2 rounded-full bg-red px-2 py-0.5 text-[11px] font-semibold text-white">
           Esgotado

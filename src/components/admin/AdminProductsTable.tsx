@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { Pencil, Copy, Trash2, Plus, Search } from "lucide-react";
 import type { Product } from "@/lib/types";
 import { formatBRL, maskId } from "@/lib/formatters";
-import { deleteProductAction, toggleProductVisibleAction } from "@/lib/actions";
+import { deleteProductAction, toggleProductVisibleAction, toggleProductStatusAction } from "@/lib/actions";
 import { ProductFormModal } from "./ProductFormModal";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 
@@ -77,6 +77,22 @@ export function AdminProductsTable({ initialProducts }: { initialProducts: Produ
       toast.error("Não foi possível atualizar a visibilidade.");
       setProducts((prev) =>
         prev.map((p) => (p.id === product.id ? { ...p, visible: product.visible } : p))
+      );
+    }
+  };
+
+  const handleToggleStatus = async (product: Product) => {
+    const nextStatus = product.status === "disponivel" ? "esgotado" : "disponivel";
+    setProducts((prev) =>
+      prev.map((p) => (p.id === product.id ? { ...p, status: nextStatus } : p))
+    );
+    try {
+      await toggleProductStatusAction(product.id, nextStatus);
+      router.refresh();
+    } catch {
+      toast.error("Não foi possível atualizar o status.");
+      setProducts((prev) =>
+        prev.map((p) => (p.id === product.id ? { ...p, status: product.status } : p))
       );
     }
   };
@@ -155,15 +171,18 @@ export function AdminProductsTable({ initialProducts }: { initialProducts: Produ
                   {product.planPrice != null ? formatBRL(product.planPrice) : "—"}
                 </td>
                 <td className="px-4 py-3">
-                  <span
-                    className={`rounded-full px-2.5 py-1 text-xs font-semibold ${
+                  <button
+                    type="button"
+                    onClick={() => handleToggleStatus(product)}
+                    title="Clique para alternar"
+                    className={`rounded-full px-2.5 py-1 text-xs font-semibold transition-opacity hover:opacity-75 ${
                       product.status === "disponivel"
                         ? "bg-green/10 text-green"
                         : "bg-red/10 text-red"
                     }`}
                   >
                     {product.status === "disponivel" ? "Disponível" : "Esgotado"}
-                  </span>
+                  </button>
                 </td>
                 <td className="px-4 py-3">
                   <button

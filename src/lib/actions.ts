@@ -65,6 +65,13 @@ export async function toggleProductVisibleAction(
   return updateProductAction(id, { visible });
 }
 
+export async function toggleProductStatusAction(
+  id: string,
+  status: Product["status"]
+): Promise<Product> {
+  return updateProductAction(id, { status });
+}
+
 // --- Pedidos -----------------------------------------------------------
 
 export async function createOrderAction(data: {

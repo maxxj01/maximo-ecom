@@ -16,6 +16,7 @@ type FormState = {
   priceOnRequest: boolean;
   planPrice: string;
   caption: string;
+  bestSeller: boolean;
   status: Product["status"];
   visible: boolean;
   imageUrl: string;
@@ -34,6 +35,7 @@ function toFormState(values?: Partial<Product>): FormState {
     priceOnRequest: values?.priceOnRequest ?? false,
     planPrice: values?.planPrice != null ? String(values.planPrice) : "",
     caption: values?.caption ?? "",
+    bestSeller: values?.bestSeller ?? false,
     status: values?.status ?? "disponivel",
     visible: values?.visible ?? true,
     imageUrl: values?.imageUrl ?? "/placeholder-product.svg",
@@ -101,6 +103,7 @@ export function ProductFormModal({
     priceOnRequest: form.priceOnRequest,
     planPrice: form.planPrice.trim() ? Number(form.planPrice) : null,
     caption: form.caption.trim() || null,
+    bestSeller: form.bestSeller,
     status: form.status,
     visible: form.visible,
     imageUrl: form.imageUrl,
@@ -135,6 +138,7 @@ export function ProductFormModal({
       priceOnRequest: form.priceOnRequest,
       planPrice: form.planPrice.trim() ? Number(form.planPrice) : null,
       caption: form.caption.trim() || null,
+      bestSeller: form.bestSeller,
       status: form.status,
       visible: form.visible,
       imageUrl: form.imageUrl,
@@ -309,6 +313,16 @@ export function ProductFormModal({
                 </label>
               </div>
             </div>
+
+            <label className="flex items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                checked={form.bestSeller}
+                onChange={(e) => set("bestSeller", e.target.checked)}
+                className="h-4 w-4 accent-purple"
+              />
+              Selo &quot;Mais vendido&quot;
+            </label>
 
             <div>
               <div className="mb-1 flex items-center justify-between">
