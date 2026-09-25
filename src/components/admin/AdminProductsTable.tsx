@@ -11,6 +11,8 @@ import { deleteProductAction, toggleProductVisibleAction, toggleProductStatusAct
 import { ProductFormModal } from "./ProductFormModal";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 
+const STATUS_CYCLE: Product["status"][] = ["disponivel", "esgotado", "em_breve"];
+
 function StatCard({ label, value }: { label: string; value: number }) {
   return (
     <div className="rounded-lg border border-border bg-bg p-4">
@@ -45,6 +47,7 @@ export function AdminProductsTable({ initialProducts }: { initialProducts: Produ
       total: products.length,
       disponiveis: products.filter((p) => p.status === "disponivel").length,
       esgotados: products.filter((p) => p.status === "esgotado").length,
+      emBreve: products.filter((p) => p.status === "em_breve").length,
       ocultos: products.filter((p) => !p.visible).length,
     }),
     [products]
@@ -82,7 +85,8 @@ export function AdminProductsTable({ initialProducts }: { initialProducts: Produ
   };
 
   const handleToggleStatus = async (product: Product) => {
-    const nextStatus = product.status === "disponivel" ? "esgotado" : "disponivel";
+    const nextStatus =
+      STATUS_CYCLE[(STATUS_CYCLE.indexOf(product.status) + 1) % STATUS_CYCLE.length];
     setProducts((prev) =>
       prev.map((p) => (p.id === product.id ? { ...p, status: nextStatus } : p))
     );
@@ -111,10 +115,11 @@ export function AdminProductsTable({ initialProducts }: { initialProducts: Produ
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 min-[900px]:px-6">
-      <div className="mb-6 grid grid-cols-2 gap-3 min-[560px]:grid-cols-4">
+      <div className="mb-6 grid grid-cols-2 gap-3 min-[560px]:grid-cols-5">
         <StatCard label="Total" value={stats.total} />
         <StatCard label="Disponíveis" value={stats.disponiveis} />
         <StatCard label="Esgotados" value={stats.esgotados} />
+        <StatCard label="Em breve" value={stats.emBreve} />
         <StatCard label="Ocultos" value={stats.ocultos} />
       </div>
 
@@ -178,10 +183,16 @@ export function AdminProductsTable({ initialProducts }: { initialProducts: Produ
                     className={`rounded-full px-2.5 py-1 text-xs font-semibold transition-opacity hover:opacity-75 ${
                       product.status === "disponivel"
                         ? "bg-green/10 text-green"
-                        : "bg-red/10 text-red"
+                        : product.status === "esgotado"
+                          ? "bg-red/10 text-red"
+                          : "bg-text-muted/10 text-text-muted"
                     }`}
                   >
-                    {product.status === "disponivel" ? "Disponível" : "Esgotado"}
+                    {product.status === "disponivel"
+                      ? "Disponível"
+                      : product.status === "esgotado"
+                        ? "Esgotado"
+                        : "Em breve"}
                   </button>
                 </td>
                 <td className="px-4 py-3">

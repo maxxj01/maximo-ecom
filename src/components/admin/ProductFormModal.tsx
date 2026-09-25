@@ -299,6 +299,7 @@ export function ProductFormModal({
                 >
                   <option value="disponivel">Disponível</option>
                   <option value="esgotado">Esgotado</option>
+                  <option value="em_breve">Em breve</option>
                 </select>
               </div>
               <div className="flex items-end">

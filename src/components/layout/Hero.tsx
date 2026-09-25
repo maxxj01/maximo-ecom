@@ -42,9 +42,16 @@ export function Hero() {
             className="animate-fade-in-up max-w-xl text-4xl font-extrabold leading-tight tracking-tight min-[900px]:text-6xl"
             style={{ animationDelay: "80ms" }}
           >
-            <span className="block text-white">Google Ads e Payments</span>
-            <span className="brand-gradient-text block">de alta qualidade</span>
+            <span className="text-white">Máximo</span> <span className="brand-gradient-text">Ecom</span>{" "}
+            <span className="text-white">Store</span>
           </h1>
+
+          <p
+            className="animate-fade-in-up max-w-md text-lg font-semibold leading-snug text-white/85 min-[900px]:text-xl"
+            style={{ animationDelay: "120ms" }}
+          >
+            Google Ads e Payments de alta qualidade
+          </p>
 
           <p
             className="animate-fade-in-up max-w-md text-lg leading-relaxed text-white/80"
@@ -76,6 +83,17 @@ export function Hero() {
             Escale suas operações mundialmente com facilidade e agilidade
           </div>
         </div>
+      </div>
+
+      <div
+        className="animate-fade-in-up relative z-10 mx-auto mt-10 max-w-3xl rounded-2xl border border-white/10 bg-white/5 p-6 text-center text-sm leading-relaxed text-white/60 backdrop-blur-sm min-[900px]:mt-14"
+        style={{ animationDelay: "280ms" }}
+      >
+        A Máximo Ecom centraliza contas verificadas para suas operações de
+        anúncios e pagamentos, incluindo contas Google Ads, Stripe e Shopify
+        Payments. As categorias do catálogo foram organizadas para facilitar a
+        descoberta dos produtos e entregar uma navegação mais clara para
+        usuários e buscadores.
       </div>
 
       <div className="relative z-10 mt-10 flex flex-col items-center gap-7 min-[900px]:mt-16">

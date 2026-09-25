@@ -11,7 +11,7 @@ export type Product = {
   planPrice?: number | null; // preço alternativo "Com plano", opcional
   caption?: string | null; // linha curta abaixo do preço (ex: "conta nova verificada sem gastos")
   bestSeller?: boolean; // exibe o selo "Mais vendido" no canto do card
-  status: "disponivel" | "esgotado";
+  status: "disponivel" | "esgotado" | "em_breve";
   visible: boolean; // aparece ou não na vitrine, independente do status
   imageUrl: string;
   ctaLabel: string; // texto do botão principal, padrão "Pedir"

@@ -36,10 +36,12 @@ export function ProductCard({
 }) {
   const { addToCart, openCart } = useCart();
   const isSoldOut = product.status === "esgotado";
+  const isComingSoon = product.status === "em_breve";
+  const isUnavailable = isSoldOut || isComingSoon;
   const visibleAttributes = product.attributes.slice(0, MAX_VISIBLE_ATTRIBUTES);
 
   const handleMainCta = () => {
-    if (isSoldOut) return;
+    if (isUnavailable) return;
     if (product.ctaType === "link" && product.ctaUrl) {
       window.open(product.ctaUrl, "_blank", "noopener,noreferrer");
       return;
@@ -73,8 +75,8 @@ export function ProductCard({
       <div
         className={
           layout === "grid"
-            ? `relative flex items-center gap-3 p-4 ${isSoldOut ? "opacity-50 grayscale" : ""}`
-            : `relative flex h-full flex-col items-start justify-center gap-2 p-3 ${isSoldOut ? "opacity-50 grayscale" : ""}`
+            ? `relative flex items-center gap-3 px-4 pb-4 ${product.bestSeller ? "pt-8" : "pt-4"} ${isUnavailable ? "opacity-50 grayscale" : ""}`
+            : `relative flex h-full flex-col items-start justify-center gap-2 px-3 pb-3 ${product.bestSeller ? "pt-7" : "pt-3"} ${isUnavailable ? "opacity-50 grayscale" : ""}`
         }
       >
         {badgeSrc && (
@@ -98,6 +100,12 @@ export function ProductCard({
       {isSoldOut && (
         <span className="absolute right-2 top-2 rounded-full bg-red px-2 py-0.5 text-[11px] font-semibold text-white">
           Esgotado
+        </span>
+      )}
+
+      {isComingSoon && (
+        <span className="absolute right-2 top-2 rounded-full border border-white/25 bg-white/10 px-2 py-0.5 text-[11px] font-semibold text-white backdrop-blur-sm">
+          Em breve
         </span>
       )}
     </div>
@@ -137,10 +145,10 @@ export function ProductCard({
               Com plano: {formatBRL(product.planPrice)}
             </div>
           )}
-          {!isSoldOut && product.caption && (
+          {!isUnavailable && product.caption && (
             <div className="mt-1 text-xs font-medium text-purple">{product.caption}</div>
           )}
-          {!isSoldOut && !product.priceOnRequest && (
+          {!isUnavailable && !product.priceOnRequest && (
             <div className="mt-1 text-xs text-text-muted">Cartão de crédito ou PIX</div>
           )}
         </div>
@@ -150,9 +158,9 @@ export function ProductCard({
             <button
               type="button"
               aria-label="Adicionar ao carrinho"
-              disabled={isSoldOut}
+              disabled={isUnavailable}
               onClick={() => {
-                if (isSoldOut) return;
+                if (isUnavailable) return;
                 addToCart(product, "normal");
                 toast.success(`${product.title} adicionado ao carrinho`);
                 openCart();
@@ -164,12 +172,12 @@ export function ProductCard({
           )}
           <button
             type="button"
-            disabled={isSoldOut}
+            disabled={isUnavailable}
             onClick={handleMainCta}
             className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-full bg-purple px-4 py-3 text-sm font-bold uppercase tracking-wide text-white shadow-md shadow-purple/25 transition-all hover:opacity-90 hover:shadow-lg hover:shadow-purple/35 disabled:cursor-not-allowed disabled:bg-border disabled:text-text-muted disabled:opacity-100 disabled:shadow-none"
           >
             {product.ctaType === "link" && <ExternalLink size={14} />}
-            {isSoldOut ? "Esgotado" : product.ctaLabel || "Pedir"}
+            {isSoldOut ? "Esgotado" : isComingSoon ? "Em breve" : product.ctaLabel || "Pedir"}
           </button>
         </div>
       </div>
@@ -228,12 +236,12 @@ export function ProductCard({
 
         <button
           type="button"
-          disabled={isSoldOut}
+          disabled={isUnavailable}
           onClick={handleMainCta}
           className="mt-3 inline-flex items-center justify-center gap-1.5 rounded-full bg-purple px-4 py-2.5 text-sm font-bold uppercase tracking-wide text-white shadow-md shadow-purple/25 transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:bg-border disabled:text-text-muted disabled:opacity-100 disabled:shadow-none"
         >
           {product.ctaType === "link" && <ExternalLink size={14} />}
-          {isSoldOut ? "Esgotado" : product.ctaLabel || "Pedir"}
+          {isSoldOut ? "Esgotado" : isComingSoon ? "Em breve" : product.ctaLabel || "Pedir"}
         </button>
       </div>
     </div>
