@@ -1,12 +1,7 @@
 "use client";
 
-import dynamic from "next/dynamic";
-import { Store, CheckCircle2, Globe2 } from "lucide-react";
+import { Store, CheckCircle2 } from "lucide-react";
 import { PlatformLogoStrip } from "./PlatformLogoStrip";
-
-// Canvas 2D simples (sem WebGL/Three.js) — ainda assim carregado só no
-// cliente pra não entrar no bundle/paint inicial da hero.
-const GlobeMap = dynamic(() => import("./GlobeMap"), { ssr: false });
 
 export function Hero() {
   return (
@@ -29,8 +24,8 @@ export function Hero() {
         }}
       />
 
-      <div className="relative z-10 mx-auto flex max-w-6xl flex-col items-center gap-10 min-[900px]:flex-row min-[900px]:items-center min-[900px]:justify-between min-[900px]:gap-8">
-        <div className="flex flex-col items-center gap-7 text-center min-[900px]:items-start min-[900px]:text-left">
+      <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center gap-10">
+        <div className="flex flex-col items-center gap-7 text-center">
           <div
             className="animate-fade-in-up inline-flex items-center rounded-full border border-purple/25 bg-lilac-light px-4 py-2 text-sm font-semibold text-purple"
             style={{ animationDelay: "0ms" }}
@@ -70,17 +65,6 @@ export function Hero() {
               <Store size={16} />
               Ver produtos
             </a>
-          </div>
-        </div>
-
-        <div
-          className="animate-fade-in-up flex w-full flex-col items-center gap-4 min-[900px]:w-auto min-[900px]:shrink-0"
-          style={{ animationDelay: "120ms" }}
-        >
-          <GlobeMap />
-          <div className="flex items-center gap-2 text-center text-sm font-medium text-white/70">
-            <Globe2 size={16} className="shrink-0 text-purple-light" />
-            Escale suas operações mundialmente com facilidade e agilidade
           </div>
         </div>
       </div>

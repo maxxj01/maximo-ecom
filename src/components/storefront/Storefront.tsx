@@ -7,6 +7,7 @@ import { ProductGrid } from "./ProductGrid";
 import { ProductList } from "./ProductList";
 import { CategorySection } from "./CategorySection";
 import { OrderModal } from "./OrderModal";
+import { Reveal } from "@/components/ui/Reveal";
 
 export function Storefront({ initialProducts }: { initialProducts: Product[] }) {
   const [query, setQuery] = useState("");
@@ -48,15 +49,17 @@ export function Storefront({ initialProducts }: { initialProducts: Product[] }) 
 
   return (
     <section id="produtos" className="mx-auto max-w-6xl px-4 py-10 min-[900px]:px-6">
-      <SearchAndFilters
-        query={query}
-        onQueryChange={setQuery}
-        categories={categories}
-        activeCategory={activeCategory}
-        onCategoryChange={setActiveCategory}
-        viewMode={viewMode}
-        onViewModeChange={setViewMode}
-      />
+      <Reveal>
+        <SearchAndFilters
+          query={query}
+          onQueryChange={setQuery}
+          categories={categories}
+          activeCategory={activeCategory}
+          onCategoryChange={setActiveCategory}
+          viewMode={viewMode}
+          onViewModeChange={setViewMode}
+        />
+      </Reveal>
 
       <div className="mt-6">
         {isBrowsingAll ? (
