@@ -93,8 +93,59 @@ body {
   animation: fade-in-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/* Globo: giro bem lento e contínuo + halo pulsando por trás. */
+@keyframes globe-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-globe-spin {
+  animation: globe-spin 160s linear infinite;
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 4.5s ease-in-out infinite;
+}
+
+/* Texto com gradiente da marca: leve "respiração" no degradê, em vez de
+   ficar estático — usado no h1 e em qualquer outro título com
+   .brand-gradient-text. */
+@keyframes gradient-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.brand-gradient-text {
+  background-size: 200% auto;
+  animation: gradient-shift 5s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .animate-fade-in-up {
+  .animate-fade-in-up,
+  .animate-globe-spin,
+  .animate-pulse-glow,
+  .brand-gradient-text {
     animation: none;
   }
 }

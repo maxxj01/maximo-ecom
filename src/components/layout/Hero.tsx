@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { Store, CheckCircle2 } from "lucide-react";
+import { Store, CheckCircle2, Globe2 } from "lucide-react";
 import { PlatformLogoStrip } from "./PlatformLogoStrip";
 
 // Canvas 2D simples (sem WebGL/Three.js) — ainda assim carregado só no
@@ -67,10 +67,14 @@ export function Hero() {
         </div>
 
         <div
-          className="animate-fade-in-up flex w-full justify-center min-[900px]:w-auto min-[900px]:shrink-0 min-[900px]:justify-end"
+          className="animate-fade-in-up flex w-full flex-col items-center gap-4 min-[900px]:w-auto min-[900px]:shrink-0"
           style={{ animationDelay: "120ms" }}
         >
           <GlobeMap />
+          <div className="flex items-center gap-2 text-center text-sm font-medium text-white/70">
+            <Globe2 size={16} className="shrink-0 text-purple-light" />
+            Escale suas operações mundialmente com facilidade e agilidade
+          </div>
         </div>
       </div>
 
