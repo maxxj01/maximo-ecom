@@ -20,8 +20,11 @@ export function Footer() {
     <footer className="border-t border-white/10" style={{ backgroundColor: "#0A0A14" }}>
       <div className="mx-auto max-w-6xl px-4 py-12 min-[900px]:px-6">
         <div className="flex flex-col items-center gap-10 text-center min-[900px]:flex-row min-[900px]:items-start min-[900px]:justify-between min-[900px]:text-left">
-          <div className="flex flex-col items-center min-[900px]:items-start">
+          <div className="flex max-w-xs flex-col items-center gap-2 min-[900px]:items-start">
             <Image src={logoLight} alt="Máximo Ecom" className="h-8 w-auto" />
+            <p className="text-sm text-white/60">
+              Máximo Ecom: tudo que sua operação precisa.
+            </p>
           </div>
 
           <div>
