@@ -88,13 +88,19 @@ export function ProductCard({
         <Copy size={12} />
       </button>
 
-      <div className="mt-auto flex items-end justify-between gap-3 pt-1">
+      <div className="mt-auto flex flex-col gap-3 pt-1">
         <div>
           <div className="text-lg font-extrabold text-text">{formatBRL(product.price)}</div>
           {product.planPrice != null && (
             <div className="text-xs font-semibold text-purple">
               Com plano: {formatBRL(product.planPrice)}
             </div>
+          )}
+          {!isSoldOut && product.caption && (
+            <div className="mt-1 text-xs font-medium text-purple">{product.caption}</div>
+          )}
+          {!isSoldOut && (
+            <div className="mt-1 text-xs text-text-muted">Cartão de crédito ou PIX</div>
           )}
         </div>
 
@@ -109,7 +115,7 @@ export function ProductCard({
                 addToCart(product, "normal");
                 toast.success(`${product.title} adicionado ao carrinho`);
               }}
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-text hover:bg-lilac-light/60 disabled:cursor-not-allowed disabled:opacity-40"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-border text-text hover:bg-lilac-light/60 disabled:cursor-not-allowed disabled:opacity-40"
             >
               <Plus size={16} />
             </button>
@@ -118,10 +124,10 @@ export function ProductCard({
             type="button"
             disabled={isSoldOut}
             onClick={handleMainCta}
-            className="inline-flex items-center gap-1.5 rounded-full bg-purple px-4 py-2 text-sm font-semibold text-white shadow-md shadow-purple/25 transition-all hover:opacity-90 hover:shadow-lg hover:shadow-purple/35 disabled:cursor-not-allowed disabled:bg-border disabled:text-text-muted disabled:opacity-100 disabled:shadow-none"
+            className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-full bg-purple px-4 py-3 text-sm font-bold uppercase tracking-wide text-white shadow-md shadow-purple/25 transition-all hover:opacity-90 hover:shadow-lg hover:shadow-purple/35 disabled:cursor-not-allowed disabled:bg-border disabled:text-text-muted disabled:opacity-100 disabled:shadow-none"
           >
             {product.ctaType === "link" && <ExternalLink size={14} />}
-            {product.ctaLabel || "Pedir"}
+            {isSoldOut ? "Esgotado" : product.ctaLabel || "Pedir"}
           </button>
         </div>
       </div>

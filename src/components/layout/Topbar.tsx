@@ -3,8 +3,10 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
-import { Menu, Moon, Sun, ShoppingCart } from "lucide-react";
+import { Menu, Moon, Sun, ShoppingCart, MessageCircle } from "lucide-react";
 import { useCart } from "@/lib/cart-context";
+
+const WHATSAPP_URL = "https://wa.me/5587981738048";
 
 function pageTitle(pathname: string): string {
   if (pathname === "/") return "Vitrine";
@@ -46,6 +48,16 @@ export function Topbar({ onOpenDrawer }: { onOpenDrawer: () => void }) {
       </div>
 
       <div className="flex items-center gap-2">
+        <a
+          href={WHATSAPP_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="brand-gradient-bg inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold text-white shadow-sm shadow-purple/25 transition-opacity hover:opacity-90 min-[560px]:px-4"
+        >
+          <MessageCircle size={16} />
+          <span className="hidden min-[560px]:inline">Falar no WhatsApp</span>
+        </a>
+
         <button
           type="button"
           aria-label="Alternar tema"

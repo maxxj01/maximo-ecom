@@ -14,6 +14,7 @@ type FormState = {
   attributes: Attribute[];
   price: string;
   planPrice: string;
+  caption: string;
   status: Product["status"];
   visible: boolean;
   imageUrl: string;
@@ -30,6 +31,7 @@ function toFormState(values?: Partial<Product>): FormState {
     attributes: values?.attributes?.length ? values.attributes : [{ label: "", value: "" }],
     price: values?.price != null ? String(values.price) : "",
     planPrice: values?.planPrice != null ? String(values.planPrice) : "",
+    caption: values?.caption ?? "",
     status: values?.status ?? "disponivel",
     visible: values?.visible ?? true,
     imageUrl: values?.imageUrl ?? "/placeholder-product.svg",
@@ -95,6 +97,7 @@ export function ProductFormModal({
     attributes: form.attributes.filter((a) => a.label.trim()),
     price: Number(form.price) || 0,
     planPrice: form.planPrice.trim() ? Number(form.planPrice) : null,
+    caption: form.caption.trim() || null,
     status: form.status,
     visible: form.visible,
     imageUrl: form.imageUrl,
@@ -122,6 +125,7 @@ export function ProductFormModal({
       attributes: form.attributes.filter((a) => a.label.trim() && a.value.trim()),
       price: Number(form.price),
       planPrice: form.planPrice.trim() ? Number(form.planPrice) : null,
+      caption: form.caption.trim() || null,
       status: form.status,
       visible: form.visible,
       imageUrl: form.imageUrl,
@@ -246,6 +250,18 @@ export function ProductFormModal({
                   className="w-full rounded-md border border-border bg-bg px-3 py-2 text-sm outline-none focus:border-purple"
                 />
               </div>
+            </div>
+
+            <div>
+              <label className="mb-1 block text-xs font-semibold text-text-muted">
+                Legenda abaixo do preço
+              </label>
+              <input
+                value={form.caption}
+                onChange={(e) => set("caption", e.target.value)}
+                placeholder="Opcional — ex: Conta nova verificada sem gastos"
+                className="w-full rounded-md border border-border bg-bg px-3 py-2 text-sm outline-none focus:border-purple"
+              />
             </div>
 
             <div className="grid grid-cols-2 gap-3">

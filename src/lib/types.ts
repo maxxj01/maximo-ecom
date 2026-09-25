@@ -8,6 +8,7 @@ export type Product = {
   attributes: Attribute[]; // linhas com check verde no card
   price: number;
   planPrice?: number | null; // preço alternativo "Com plano", opcional
+  caption?: string | null; // linha curta abaixo do preço (ex: "conta nova verificada sem gastos")
   status: "disponivel" | "esgotado";
   visible: boolean; // aparece ou não na vitrine, independente do status
   imageUrl: string;
