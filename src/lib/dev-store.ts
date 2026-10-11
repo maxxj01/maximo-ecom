@@ -106,7 +106,7 @@ let products: Product[] = [
     planPrice: null,
     caption: "Docs reais e pessoais com tudo correto",
     bestSeller: true,
-    status: "esgotado",
+    status: "disponivel",
     visible: true,
     imageUrl: "/placeholder-product.svg",
     ctaLabel: "Reservar",
